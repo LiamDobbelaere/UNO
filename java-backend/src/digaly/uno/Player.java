@@ -12,4 +12,14 @@ public class Player
         this.name = name;
         this.hand = new Deck();
     }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public Deck getHand()
+    {
+        return hand;
+    }
 }

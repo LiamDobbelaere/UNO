@@ -16,26 +16,36 @@ public class Deck
         this.cards = new ArrayList<>();
     }
 
-    public Card peekTopCard() {
+    public Card peekTopCard()
+    {
         return cards.get(cards.size() - 1);
     }
 
-    public Card drawTopCard() {
+    public Card drawTopCard()
+    {
         Card topCard = peekTopCard();
         cards.remove(cards.size() - 1);
 
         return topCard;
     }
 
-    public void shuffle() {
+    public void shuffle()
+    {
         Collections.shuffle(cards);
     }
 
-    public void addCardToTop(Card card) {
+    public void removeCard(Card card)
+    {
+        cards.remove(card);
+    }
+
+    public void addCardToTop(Card card)
+    {
         cards.add(card);
     }
 
-    public void addCardToBottom(Card card) {
+    public void addCardToBottom(Card card)
+    {
         cards.add(0, card);
     }
 

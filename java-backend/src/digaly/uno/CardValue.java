@@ -32,4 +32,8 @@ public enum CardValue
     {
         return numericValue;
     }
+
+    public boolean isSpecialCard() {
+        return numericValue < 0 || numericValue > 9;
+    }
 }
