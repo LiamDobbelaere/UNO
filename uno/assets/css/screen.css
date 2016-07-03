@@ -1,0 +1,179 @@
+body {
+    font-family: "Segoe UI", sans-serif;
+    position: relative;
+}
+
+#connecting {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+#start-new {
+    display: none;
+    width: 150px;
+    height: 32px;
+    text-align: center;
+    line-height: 32px;
+    color: #008000;
+}
+
+#link b {
+    color: #008000;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+section {
+    padding: 16px;
+    background-color: #F5F5F5;
+    border-radius: 16px;
+    margin-bottom: 16px;
+}
+
+label {
+    margin-right: 8px;
+    color: dimgray;
+}
+
+input {
+    padding: 4px;
+    border-radius: 4px;
+    border: 1px solid dimgray;
+    margin-bottom: 8px;
+    transition: 0.2s box-shadow;
+}
+
+input:focus {
+    border: 1px solid #008000;
+    box-shadow: 0 0 4px 0 #008000;
+    outline: none;
+}
+
+#create {
+    display: block;
+    color: #008000;
+}
+
+h1 {
+    font-size: 2rem;
+    color: #008000;
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+
+#container {
+    margin-top: 32px;
+    width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+}
+
+.create {
+    margin-bottom: 32px;
+}
+
+#playarea {
+    width: 700px;
+    height: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    position: relative;
+}
+
+.card {
+    display: inline-block;
+    border-radius: 8px;
+    width: calc(320px / 2);
+    height: calc(500px / 2);
+    background-image: url("../media/cards/back.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: width 0.2s;
+}
+
+.card.small {
+    width: calc(320px / 3);
+    height: calc(500px / 3);
+}
+
+.player-area {
+    display: inline-block;
+    position: absolute;
+    width: 100%;
+}
+
+.player-top, .player-left{
+    top: 0;
+    left: 0;
+}
+
+.player-bottom {
+    bottom: 0;
+    left: 0;
+}
+
+.player-area .card {
+    box-shadow: 2px 0 8px 0 rgba(0, 0, 0, 0.7);
+}
+
+#draw-pile, #discard-pile {
+    box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.7);
+}
+
+.player-area .card:not(:last-child) {
+    width: 50px;
+    background-size: cover;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.player-area .card:not(:last-child):not(:first-child), .player-area .card:last-child {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+}
+.player-area .card:only-child {
+    border-radius: 8px;
+}
+
+.player-top {
+    transform: rotate(180deg);
+}
+
+.player-left {
+    top: calc(0px - 500px / 3 - 1px);
+    left: 0;
+    transform-origin: bottom left;
+    transform: rotate(90deg);
+}
+
+.player-right {
+    top: calc(0px - 500px / 3 - 1px);
+    left: 0;
+    transform-origin: bottom right;
+    transform: rotate(-90deg);
+}
+
+.player-bottom .card.small:hover {
+    width: calc(320px / 3);
+    background-size: calc(320px / 3) calc(500px / 3);
+}
+
+.area-middle {
+    position: absolute;
+    height: 368px;
+    width: 368px;
+    left: 166px;
+    top: 166px;
+}
+
+.area-middle .card {
+    margin-top: 64px;
+}
