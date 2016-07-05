@@ -15,6 +15,7 @@ public class Game
     private Deck drawPile;
     private Deck discardPile;
     private boolean started;
+    private boolean isOver;
     private boolean reversed;
 
     public Game()
@@ -30,6 +31,7 @@ public class Game
 
         this.started = false;
         this.reversed = false;
+        this.isOver = false;
     }
 
     public void addPlayer(String name)
@@ -63,41 +65,65 @@ public class Game
         return players;
     }
 
+    public Player getPlayer(String name)
+    {
+        Player returnPlayer = null;
+
+        for (Player player : players)
+        {
+            if (player.getName().equals(name))
+            {
+                returnPlayer = player;
+            }
+        }
+
+        return returnPlayer;
+    }
+
     public void advancePlayer()
     {
         currentPlayer = getNextPlayerID();
 
-        if (!canPlayCards())
+        /*if (!canPlayCards())
         {
             getCurrentPlayer().getHand().addCardToTop(drawPile.drawTopCard());
-        }
+            advancePlayer();
+        }*/
     }
 
     private int getNextPlayerID()
     {
+        if (isOver()) return 0;
+
+        boolean first = true;
         int nextPlayer = 0;
 
-        if (reversed)
+        while (first || getPlayers().get(nextPlayer).isOut())
         {
-            if (currentPlayer - 1 < 0)
+            if (reversed)
             {
-                nextPlayer = players.size() - 1;
+                if (currentPlayer - 1 < 0)
+                {
+                    nextPlayer = players.size() - 1;
+                }
+                else
+                {
+                    nextPlayer = currentPlayer - 1;
+                }
             }
             else
             {
-                nextPlayer = currentPlayer - 1;
+                if (currentPlayer + 1 == players.size())
+                {
+                    nextPlayer = 0;
+                }
+                else
+                {
+                    nextPlayer = currentPlayer + 1;
+                }
             }
-        }
-        else
-        {
-            if (currentPlayer + 1 == players.size())
-            {
-                nextPlayer = 0;
-            }
-            else
-            {
-                nextPlayer = currentPlayer + 1;
-            }
+
+            first = false;
         }
 
         return nextPlayer;
@@ -128,6 +154,8 @@ public class Game
         return started;
     }
 
+    public boolean isOver() { return isOver; }
+
     public void start()
     {
         DeckBuilder builder = new DeckBuilder();
@@ -149,15 +177,15 @@ public class Game
         started = true;
     }
 
-    public boolean canPlayCards() {
+    public boolean canPlayCards()
+    {
         boolean canPlay = false;
 
         Card topDiscardCard = discardPile.peekTopCard();
 
         for (Card c : getCurrentPlayer().getHand().getCards())
         {
-            if (topDiscardCard.getCardColor() == c.getCardColor()
-                    || topDiscardCard.getCardValue() == c.getCardValue())
+            if (canCardBePlayed(c, topDiscardCard))
             {
                 canPlay = true;
             }
@@ -174,18 +202,56 @@ public class Game
         }
     }
 
+    public void drawCard()
+    {
+        if (isOver()) return;
+
+        Card topCard = drawPile.drawTopCard();
+
+        getCurrentPlayer().getHand().addCardToTop(topCard);
+
+        if (canPlayCards())
+        {
+            playCard(topCard);
+        }
+        else
+        {
+            advancePlayer();
+        }
+    }
+
+    public boolean canCardBePlayed(Card card, Card discardCard)
+    {
+        return (discardCard.getCardColor() == card.getCardColor()
+                || discardCard.getCardValue() == card.getCardValue()
+                || card.getCardColor() == CardColor.JOKER
+                || discardCard.getCardColor() == CardColor.JOKER);
+    }
+
+    public void checkOver() {
+        int playersOut = 0;
+
+        for (Player player : players)
+        {
+            if (player.isOut()) playersOut += 1;
+        }
+
+        if (players.size() - playersOut <= 1)
+        {
+            isOver = true;
+        }
+    }
+
     public void playCard(Card card)
     {
-        boolean playedSkip = false;
-        boolean playedReverse = false;
+        Player currentPlayer = getCurrentPlayer();
+        boolean blockAdvance = false;
 
         Card topDiscardCard = discardPile.peekTopCard();
 
-        if (topDiscardCard.getCardColor() == card.getCardColor()
-                || topDiscardCard.getCardValue() == card.getCardValue()
-                || card.getCardColor() == CardColor.JOKER)
+        if (canCardBePlayed(card, topDiscardCard) && !isOver())
         {
-            getCurrentPlayer().getHand().removeCard(card);
+            currentPlayer.getHand().removeCard(card);
             discardPile.addCardToTop(card);
 
             if (card.getCardValue().isSpecialCard())
@@ -194,30 +260,45 @@ public class Game
                 {
                     case ADDFOUR:
                         nextPlayerDrawCards(4);
+
+                        if (currentPlayer.getHand().getCards().size() > 0)
+                        {
+                            blockAdvance = true;
+                        }
                         break;
                     case ADDTWO:
                         nextPlayerDrawCards(2);
+
                         break;
                     case WILD:
+                        if (currentPlayer.getHand().getCards().size() > 0)
+                        {
+                            blockAdvance = true;
+                        }
                         break;
                     case REVERSE:
                         reversed = !reversed;
-                        playedReverse = true;
 
-                        if (players.size() > 2)
+                        if (players.size() == 2)
                         {
-                            advancePlayer();
+                            blockAdvance = true;
                         }
                         break;
                     case SKIP:
-                        playedSkip = true;
-                        advancePlayer();
                         advancePlayer();
                         break;
                 }
             }
 
-            if (!canPlayCards() && !playedSkip && !playedReverse) advancePlayer();
+            if (currentPlayer.getHand().getCards().size() == 0 && !currentPlayer.isOut())
+            {
+                currentPlayer.setOut(true);
+                advancePlayer();
+            }
+
+            checkOver();
+
+            if (!blockAdvance) advancePlayer();
         }
     }
 }

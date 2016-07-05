@@ -7,10 +7,12 @@ public class Player
 {
     private String name;
     private Deck hand;
+    private boolean isOut;
 
     public Player(String name) {
         this.name = name;
         this.hand = new Deck();
+        this.isOut = false;
     }
 
     public String getName()
@@ -21,5 +23,15 @@ public class Player
     public Deck getHand()
     {
         return hand;
+    }
+
+    public boolean isOut()
+    {
+        return isOut;
+    }
+
+    public void setOut(boolean value)
+    {
+        isOut = value;
     }
 }

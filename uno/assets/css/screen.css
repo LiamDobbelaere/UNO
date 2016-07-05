@@ -14,6 +14,12 @@ body {
     text-align: center;
 }
 
+#link span {
+    display: block;
+    line-height: 24px;
+    margin-bottom: 16px;
+}
+
 #start-new {
     display: none;
     width: 150px;
@@ -29,11 +35,31 @@ body {
     margin-bottom: 8px;
 }
 
+.button-normal {
+    background-color: #008000;
+    color: white;
+    padding: 5px;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 16px;
+    border-radius: 4px;
+    font-size: 1.5rem;
+}
+
+#ready-game {
+    font-weight: bold;
+}
+
+.button-normal:hover {
+    opacity: 0.75;
+}
+
 section {
     padding: 16px;
     background-color: #F5F5F5;
     border-radius: 16px;
     margin-bottom: 16px;
+    line-height: 24px;
 }
 
 label {
@@ -108,9 +134,11 @@ h1 {
     display: inline-block;
     position: absolute;
     width: 100%;
+    overflow: visible;
+    white-space: nowrap;
 }
 
-.player-top, .player-left{
+.player-top, .player-left {
     top: 0;
     left: 0;
 }
@@ -118,6 +146,7 @@ h1 {
 .player-bottom {
     bottom: 0;
     left: 0;
+    z-index: 10;
 }
 
 .player-area .card {
@@ -135,11 +164,17 @@ h1 {
     border-bottom-right-radius: 0;
 }
 
-.player-area .card:not(:last-child):not(:first-child), .player-area .card:last-child {
+.player-area:not(.player-bottom) .card:not(:last-child):not(:first-child), .player-area .card:last-child {
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
 }
-.player-area .card:only-child {
+
+.player-bottom .card:not(:last-child):not(:nth-child(2)) {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+}
+
+.player-area .card:only-of-type {
     border-radius: 8px;
 }
 
@@ -176,4 +211,65 @@ h1 {
 
 .area-middle .card {
     margin-top: 64px;
+}
+
+.chat {
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    right: -260px;
+    top: 0;
+    border-radius: 16px;
+    box-shadow: inset 0 0 15px 0 #008000;
+    border: 2px solid #008000;
+}
+
+.chat .messages {
+    width: 253px;
+    height: 218px;
+    border-radius: 16px;
+    text-align: left;
+    padding: 8px;
+    overflow: scroll;
+}
+
+.chat input {
+    border-radius: 16px;
+    height: 32px;
+    position: absolute;
+    width: 242px;
+    padding: 0;
+    bottom: -2px;
+    left: -2px;
+    padding-left: 8px;
+    margin: 0;
+    border: 2px solid #008000;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.chat .message, .chat .notification {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.chat .username {
+    font-weight: bold;
+    color: #008000;
+}
+
+.chat .username.me {
+    color: dimgray;
+}
+
+.chat .notification {
+    font-style: italic;
+    color: #008000;
+}
+
+#draw-card {
+    position: absolute;
+    top: -50px;
+    right: 0;
+    height: 24px;
 }

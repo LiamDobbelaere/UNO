@@ -179,7 +179,8 @@ public class GameTest
         nextPlayer.getHand().addCardToTop(playedCard);
 
         game.advancePlayer();
+        game.drawCard();
 
-        assertTrue("Current player does not have two cards as expected", game.getCurrentPlayer().getHand().getCards().size() == 2);
+        assertTrue("Next player does not have two cards as expected", game.getNextPlayer().getHand().getCards().size() == 2);
     }
 }

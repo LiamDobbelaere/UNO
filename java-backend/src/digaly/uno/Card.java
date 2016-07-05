@@ -23,4 +23,10 @@ public class Card
     {
         return cardValue;
     }
+
+    @Override
+    public String toString()
+    {
+        return this.cardColor.getColorName() + " " + this.cardValue.getValueName();
+    }
 }
